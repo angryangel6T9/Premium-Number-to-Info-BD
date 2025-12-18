@@ -1,296 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Number Intelligence</title>
-    <style>
-        :root {
-            --primary: #d4af37; /* Gold */
-            --bg-dark: #0a0a0b;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text-main: #ffffff;
-            --text-dim: #a0a0a0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Number Intelligence</title>
+<style>
+    :root {
+        --primary: #f9c74f; /* Vibrant Gold */
+        --secondary: #ff6b6b; /* Accent red */
+        --bg-dark: #0f0f17;
+        --card-bg: rgba(255, 255, 255, 0.05);
+        --text-main: #ffffff;
+        --text-dim: #c0c0c0;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', 'Roboto', sans-serif;
+    }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+    body {
+        background: linear-gradient(135deg, #0f0f17, #1a1a2e);
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+        transition: background 0.5s ease;
+    }
 
-        /* Container & Glassmorphism */
-        .app-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            position: relative;
-        }
+    .app-container {
+        width: 100%;
+        max-width: 420px;
+        padding: 25px;
+        position: relative;
+    }
 
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            display: none; /* Hidden by default */
-            transition: all 0.4s ease;
-        }
+    .card {
+        background: var(--card-bg);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 30px;
+        padding: 45px 35px;
+        text-align: center;
+        box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+        display: none;
+        transition: all 0.5s ease;
+        transform: translateY(20px);
+        opacity: 0;
+    }
 
-        .card.active {
-            display: block;
-            animation: fadeIn 0.5s ease forwards;
-        }
+    .card.active {
+        display: block;
+        animation: fadeInUp 0.6s forwards;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
 
-        /* Typography */
-        h1 { font-size: 1.8rem; margin-bottom: 10px; color: var(--primary); letter-spacing: 1px; }
-        h2 { font-size: 1.4rem; margin-bottom: 20px; }
-        p { color: var(--text-dim); margin-bottom: 30px; line-height: 1.5; }
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 12px;
+        color: var(--primary);
+        letter-spacing: 1px;
+        text-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+    }
 
-        /* Inputs */
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
 
-        .input-group label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--primary);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
+    p {
+        color: var(--text-dim);
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
 
-        .phone-wrapper {
-            display: flex;
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            overflow: hidden;
-        }
+    .input-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
 
-        .prefix {
-            padding: 12px;
-            background: rgba(255,255,255,0.05);
-            color: var(--text-dim);
-            border-right: 1px solid rgba(255,255,255,0.1);
-        }
+    .input-group label {
+        display: block;
+        font-size: 0.85rem;
+        color: var(--primary);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            border: none;
-            color: white;
-            outline: none;
-            font-size: 1rem;
-        }
+    .phone-wrapper {
+        display: flex;
+        background: rgba(255,255,255,0.05);
+        border-radius: 15px;
+        border: 1px solid rgba(255,255,255,0.15);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
 
-        /* Buttons */
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            border: none;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-bottom: 15px;
-        }
+    .phone-wrapper:hover {
+        border-color: var(--primary);
+        box-shadow: 0 0 15px rgba(249,199,79,0.4);
+    }
 
-        .btn-primary {
-            background: var(--primary);
-            color: #000;
-        }
+    .prefix {
+        padding: 14px;
+        background: rgba(255,255,255,0.08);
+        color: var(--text-dim);
+        font-weight: bold;
+        border-right: 1px solid rgba(255,255,255,0.1);
+    }
 
-        .btn-primary:hover {
-            background: #f1c40f;
-            transform: translateY(-2px);
-        }
+    input {
+        width: 100%;
+        padding: 14px;
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        outline: none;
+        font-size: 1rem;
+        font-weight: 500;
+    }
 
-        .btn-link {
-            background: transparent;
-            color: var(--text-dim);
-            text-decoration: underline;
-            font-size: 0.9rem;
-        }
+    .btn {
+        width: 100%;
+        padding: 16px;
+        border-radius: 18px;
+        border: none;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 15px;
+        letter-spacing: 0.5px;
+    }
 
-        /* Payment Details */
-        .payment-box {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px dashed var(--primary);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
+    .btn-primary {
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        color: #000;
+        box-shadow: 0 5px 20px rgba(249,199,79,0.4);
+    }
 
-        .payment-box span {
-            display: block;
-            margin: 5px 0;
-            font-weight: bold;
-        }
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(249,199,79,0.6);
+    }
 
-        /* Loader */
-        .loader {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-left-color: var(--primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
+    .btn-link {
+        background: transparent;
+        color: var(--text-dim);
+        text-decoration: underline;
+        font-size: 0.95rem;
+    }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+    .payment-box {
+        background: rgba(249,199,79,0.1);
+        border: 1px dashed var(--primary);
+        padding: 18px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        text-align: left;
+        font-weight: 500;
+        line-height: 1.4;
+    }
 
-        /* প্র্যাঙ্ক টেক্সট এনিমেশন */
-        .prank-text-bold {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #ff4757;
-            margin-top: 20px;
-            line-height: 1.4;
-            animation: bounce 0.5s infinite alternate;
-        }
+    .payment-box span {
+        display: block;
+        margin: 5px 0;
+        font-weight: 700;
+        font-size: 1.05rem;
+    }
 
-        @keyframes bounce {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
-        }
-    </style>
+    .loader {
+        border: 5px solid rgba(255, 255, 255, 0.1);
+        border-left-color: var(--primary);
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        animation: spin 1s linear infinite;
+        margin: 25px auto;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .prank-text-bold {
+        font-size: 1.9rem;
+        font-weight: 900;
+        color: #ff6b6b;
+        margin-top: 25px;
+        line-height: 1.4;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+        animation: pulse 0.6s infinite alternate;
+    }
+
+    @keyframes pulse {
+        from { transform: scale(1); }
+        to { transform: scale(1.08); }
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 0.8rem;
+        color: rgba(255,255,255,0.5);
+        letter-spacing: 0.5px;
+    }
+
+</style>
 </head>
 <body>
 
-    <div class="app-container">
-        
-        <div id="screen-1" class="card active">
-            <h1>Premium Number Intelligence</h1>
-            <p>Access our ultra-secure global database for deep insights and ownership history.</p>
-            <button class="btn btn-primary" onclick="showScreen('screen-2')">Get Info</button>
-        </div>
+<div class="app-container">
 
-        <div id="screen-2" class="card">
-            <h2>Pay to Get Info</h2>
-            <div class="payment-box">
-                <p style="margin-bottom:5px; color: var(--primary)">bKash Personal</p>
-                <span>01717253444</span>
-                <span style="font-size: 1.2rem">Amount: 200 BDT</span>
-            </div>
-            
-            <div class="input-group">
-                <label>Target Phone Number</label>
-                <div class="phone-wrapper">
-                    <div class="prefix">+880</div>
-                    <input type="number" placeholder="1XXXXXXXXX">
-                </div>
-            </div>
-
-            <button class="btn btn-primary" onclick="showScreen('screen-paid-tx')">Done</button>
-            <button class="btn btn-link" onclick="showScreen('screen-free-trial')">Free Trial Option</button>
-        </div>
-
-        <div id="screen-paid-tx" class="card">
-            <h2>Verify Payment</h2>
-            <p>Enter the Transaction ID received after your bKash payment.</p>
-            <div class="input-group">
-                <input type="text" placeholder="TrxID (e.g. AMK92JKLM)" style="border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;">
-            </div>
-            <button class="btn btn-primary" onclick="showScreen('screen-loading')">Next</button>
-        </div>
-
-        <div id="screen-loading" class="card">
-            <div class="loader"></div>
-            <h2>Verifying payment...</h2>
-            <p>Please do not refresh or close this window. This may take a few minutes depending on server load.</p>
-        </div>
-
-        <div id="screen-free-trial" class="card">
-            <h2>Free Trial</h2>
-            <p>You can try our service once for free. Limited data depth available.</p>
-            <button class="btn btn-primary" onclick="showScreen('screen-free-action')">Start Free Trial</button>
-            <button class="btn btn-link" onclick="showScreen('screen-2')">Back to Premium</button>
-        </div>
-
-        <div id="screen-free-action" class="card">
-            <h2>Enter Number</h2>
-            <div id="input-area">
-                <div class="input-group">
-                    <label>Phone Number</label>
-                    <div class="phone-wrapper">
-                        <div class="prefix">+880</div>
-                        <input type="number" id="trial-input" placeholder="1XXXXXXXXX">
-                    </div>
-                </div>
-                <button class="btn btn-primary" onclick="playPrank()">Get Info</button>
-            </div>
-            <div id="prank-display" style="display:none;">
-                <div class="prank-text-bold">
-                     হুর হালা, মাগানা খাবি আর কত দিন? <br> মূতি আয় হুতি যা 😂💩🐸 
-                </div>
-                <button class="btn btn-link" onclick="location.reload()" style="margin-top: 20px;">Try Again</button>
-            </div>
-        </div>
-
+    <div id="screen-1" class="card active">
+        <h1>Premium Number Intelligence</h1>
+        <p>Access our ultra-secure global database for deep insights and ownership history.</p>
+        <button class="btn btn-primary" onclick="showScreen('screen-2')">Get Info</button>
     </div>
 
-    <audio id="prankAudio">
-        <source src="prank.mp3" type="audio/mpeg">
-    </audio>
+    <div id="screen-2" class="card">
+        <h2>Pay to Get Info</h2>
+        <div class="payment-box">
+            <p style="color: var(--primary); margin-bottom:5px;">bKash Personal</p>
+            <span>01717253444</span>
+            <span style="font-size: 1.2rem">Amount: 200 BDT</span>
+        </div>
+        
+        <div class="input-group">
+            <label>Target Phone Number</label>
+            <div class="phone-wrapper">
+                <div class="prefix">+880</div>
+                <input type="number" placeholder="1XXXXXXXXX">
+            </div>
+        </div>
 
-    <script>
-        function showScreen(screenId) {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => card.classList.remove('active'));
+        <button class="btn btn-primary" onclick="showScreen('screen-paid-tx')">Done</button>
+        <button class="btn btn-link" onclick="showScreen('screen-free-trial')">Free Trial Option</button>
+    </div>
 
-            const target = document.getElementById(screenId);
-            if (target) {
-                target.classList.add('active');
-            }
-        }
+    <div id="screen-paid-tx" class="card">
+        <h2>Verify Payment</h2>
+        <p>Enter the Transaction ID received after your bKash payment.</p>
+        <div class="input-group">
+            <input type="text" placeholder="TrxID (e.g. AMK92JKLM)" style="border: 1px solid rgba(255,255,255,0.15); border-radius: 15px; padding: 12px;">
+        </div>
+        <button class="btn btn-primary" onclick="showScreen('screen-loading')">Next</button>
+    </div>
 
-        function playPrank() {
-            const audio = document.getElementById('prankAudio');
-            const num = document.getElementById('trial-input').value;
-            const inputArea = document.getElementById('input-area');
-            const prankDisplay = document.getElementById('prank-display');
-            
-            if(!num) {
-                alert("Please enter a number first.");
-                return;
-            }
+    <div id="screen-loading" class="card">
+        <div class="loader"></div>
+        <h2>Verifying payment...</h2>
+        <p>Please do not refresh or close this window. This may take a few minutes depending on server load.</p>
+    </div>
 
-            // অডিও প্লে করা
-            audio.play().catch(e => {
-                console.log("Audio play failed or file missing.");
-            });
+    <div id="screen-free-trial" class="card">
+        <h2>Free Trial</h2>
+        <p>You can try our service once for free. Limited data depth available.</p>
+        <button class="btn btn-primary" onclick="showScreen('screen-free-action')">Start Free Trial</button>
+        <button class="btn btn-link" onclick="showScreen('screen-2')">Back to Premium</button>
+    </div>
 
-            // ইনপুট এরিয়া লুকিয়ে মেসেজ দেখানো
-            inputArea.style.display = 'none';
-            prankDisplay.style.display = 'block';
+    <div id="screen-free-action" class="card">
+        <h2>Enter Number</h2>
+        <div id="input-area">
+            <div class="input-group">
+                <label>Phone Number</label>
+                <div class="phone-wrapper">
+                    <div class="prefix">+880</div>
+                    <input type="number" id="trial-input" placeholder="1XXXXXXXXX">
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="playPrank()">Get Info</button>
+        </div>
+        <div id="prank-display" style="display:none;">
+            <div class="prank-text-bold">
+                 হুর হালা, মাগানা খাবি আর কত দিন? <br> মূতি আয় হুতি যা 😂💩🐸 
+            </div>
+            <button class="btn btn-link" onclick="location.reload()" style="margin-top: 20px;">Try Again</button>
+        </div>
+    </div>
 
-            console.log("Prank triggered for number: " + num);
-        }
-    </script>
+</div> <!-- app-container -->
+
+<div class="footer">
+    Powered By Ahmad Sazid
+</div>
+
+<audio id="prankAudio">
+    <source src="prank.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    function showScreen(screenId) {
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => card.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+    }
+
+    function playPrank() {
+        const audio = document.getElementById('prankAudio');
+        const num = document.getElementById('trial-input').value;
+        if(!num) { alert("Please enter a number first."); return; }
+
+        audio.play().catch(() => console.log("Audio play failed."));
+
+        document.getElementById('input-area').style.display = 'none';
+        document.getElementById('prank-display').style.display = 'block';
+        console.log("Prank triggered for number: " + num);
+    }
+</script>
+
 </body>
 </html>
