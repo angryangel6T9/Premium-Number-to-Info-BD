@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Number Intelligence</title>
+    <style>
+        :root {
+            --primary: #d4af37; /* Gold */
+            --bg-dark: #0a0a0b;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Container & Glassmorphism */
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: none; /* Hidden by default */
+            transition: all 0.4s ease;
+        }
+
+        .card.active {
+            display: block;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        h1 { font-size: 1.8rem; margin-bottom: 10px; color: var(--primary); letter-spacing: 1px; }
+        h2 { font-size: 1.4rem; margin-bottom: 20px; }
+        p { color: var(--text-dim); margin-bottom: 30px; line-height: 1.5; }
+
+        /* Inputs */
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .phone-wrapper {
+            display: flex;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+
+        .prefix {
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-dim);
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: white;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: #f1c40f;
+            transform: translateY(-2px);
+        }
+
+        .btn-link {
+            background: transparent;
+            color: var(--text-dim);
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+
+        /* Payment Details */
+        .payment-box {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px dashed var(--primary);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .payment-box span {
+            display: block;
+            margin: 5px 0;
+            font-weight: bold;
+        }
+
+        /* Loader */
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div id="screen-1" class="card active">
+            <h1>Premium Number Intelligence</h1>
+            <p>Access our ultra-secure global database for deep insights and ownership history.</p>
+            <button class="btn btn-primary" onclick="showScreen('screen-2')">Get Info</button>
+        </div>
+
+        <div id="screen-2" class="card">
+            <h2>Pay to Get Info</h2>
+            <div class="payment-box">
+                <p style="margin-bottom:5px; color: var(--primary)">bKash Personal</p>
+                <span>01718898444</span>
+                <span style="font-size: 1.2rem">Amount: 200 BDT</span>
+            </div>
+            
+            <div class="input-group">
+                <label>Target Phone Number</label>
+                <div class="phone-wrapper">
+                    <div class="prefix">+880</div>
+                    <input type="number" placeholder="1XXXXXXXXX">
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="showScreen('screen-paid-tx')">Done</button>
+            <button class="btn btn-link" onclick="showScreen('screen-free-trial')">Free Trial Option</button>
+        </div>
+
+        <div id="screen-paid-tx" class="card">
+            <h2>Verify Payment</h2>
+            <p>Enter the Transaction ID received after your bKash payment.</p>
+            <div class="input-group">
+                <input type="text" placeholder="TrxID (e.g. AMK92JKLM)" style="border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;">
+            </div>
+            <button class="btn btn-primary" onclick="showScreen('screen-loading')">Next</button>
+        </div>
+
+        <div id="screen-loading" class="card">
+            <div class="loader"></div>
+            <h2>Verifying payment...</h2>
+            <p>Please do not refresh or close this window. This may take a few minutes depending on server load.</p>
+        </div>
+
+        <div id="screen-free-trial" class="card">
+            <h2>Free Trial</h2>
+            <p>You can try our service once for free. Limited data depth available.</p>
+            <button class="btn btn-primary" onclick="showScreen('screen-free-action')">Start Free Trial</button>
+            <button class="btn btn-link" onclick="showScreen('screen-2')">Back to Premium</button>
+        </div>
+
+        <div id="screen-free-action" class="card">
+            <h2>Enter Number</h2>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <div class="phone-wrapper">
+                    <div class="prefix">+880</div>
+                    <input type="number" id="trial-input" placeholder="1XXXXXXXXX">
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="playPrank()">Get Info</button>
+        </div>
+
+    </div>
+
+    <audio id="prankAudio">
+        <source src="prank.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => card.classList.remove('active'));
+
+            // Show target card
+            const target = document.getElementById(screenId);
+            if (target) {
+                target.classList.add('active');
+            }
+        }
+
+        function playPrank() {
+            const audio = document.getElementById('prankAudio');
+            const num = document.getElementById('trial-input').value;
+            
+            if(!num) {
+                alert("Please enter a number first.");
+                return;
+            }
+
+            // Attempt to play audio
+            audio.play().catch(e => {
+                alert("Prank Triggered! (Audio file 'prank.mp3' not found, but logic is working)");
+            });
+
+            console.log("Prank audio triggered for number: " + num);
+        }
+    </script>
+</body>
+</html>
