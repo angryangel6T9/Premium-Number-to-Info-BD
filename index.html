@@ -163,6 +163,21 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* প্র্যাঙ্ক টেক্সট এনিমেশন */
+        .prank-text-bold {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #ff4757;
+            margin-top: 20px;
+            line-height: 1.4;
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
     </style>
 </head>
 <body>
@@ -179,7 +194,7 @@
             <h2>Pay to Get Info</h2>
             <div class="payment-box">
                 <p style="margin-bottom:5px; color: var(--primary)">bKash Personal</p>
-                <span>01718898444</span>
+                <span>01717253444</span>
                 <span style="font-size: 1.2rem">Amount: 200 BDT</span>
             </div>
             
@@ -219,14 +234,22 @@
 
         <div id="screen-free-action" class="card">
             <h2>Enter Number</h2>
-            <div class="input-group">
-                <label>Phone Number</label>
-                <div class="phone-wrapper">
-                    <div class="prefix">+880</div>
-                    <input type="number" id="trial-input" placeholder="1XXXXXXXXX">
+            <div id="input-area">
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <div class="phone-wrapper">
+                        <div class="prefix">+880</div>
+                        <input type="number" id="trial-input" placeholder="1XXXXXXXXX">
+                    </div>
                 </div>
+                <button class="btn btn-primary" onclick="playPrank()">Get Info</button>
             </div>
-            <button class="btn btn-primary" onclick="playPrank()">Get Info</button>
+            <div id="prank-display" style="display:none;">
+                <div class="prank-text-bold">
+                     হুর হালা, মাগানা খাবি আর কত দিন? <br> মূতি আয় হুতি যা 😂💩🐸 
+                </div>
+                <button class="btn btn-link" onclick="location.reload()" style="margin-top: 20px;">Try Again</button>
+            </div>
         </div>
 
     </div>
@@ -237,11 +260,9 @@
 
     <script>
         function showScreen(screenId) {
-            // Hide all cards
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => card.classList.remove('active'));
 
-            // Show target card
             const target = document.getElementById(screenId);
             if (target) {
                 target.classList.add('active');
@@ -251,18 +272,24 @@
         function playPrank() {
             const audio = document.getElementById('prankAudio');
             const num = document.getElementById('trial-input').value;
+            const inputArea = document.getElementById('input-area');
+            const prankDisplay = document.getElementById('prank-display');
             
             if(!num) {
                 alert("Please enter a number first.");
                 return;
             }
 
-            // Attempt to play audio
+            // অডিও প্লে করা
             audio.play().catch(e => {
-                alert("Prank Triggered! (Audio file 'prank.mp3' not found, but logic is working)");
+                console.log("Audio play failed or file missing.");
             });
 
-            console.log("Prank audio triggered for number: " + num);
+            // ইনপুট এরিয়া লুকিয়ে মেসেজ দেখানো
+            inputArea.style.display = 'none';
+            prankDisplay.style.display = 'block';
+
+            console.log("Prank triggered for number: " + num);
         }
     </script>
 </body>
